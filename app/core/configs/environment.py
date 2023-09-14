@@ -2,7 +2,7 @@
 Module to load all Environment variables
 """
 
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 
 
 class Environment(BaseSettings):
@@ -13,6 +13,7 @@ class Environment(BaseSettings):
     # APPLICATION
     APPLICATION_HOST: str = "localhost"
     APPLICATION_PORT: int = 8000
+    ADDRESS_BASE_URL: str = "localhost:8000"
 
     # DATABASE
     DATABASE_URL: str = "localhost:5432"
@@ -24,11 +25,6 @@ class Environment(BaseSettings):
     ENVIRONMENT: str = "test"
     DATABASE_MIN_CONNECTIONS: int = 1
     DATABASE_MAX_CONNECTIONS: int = 1
-
-    # REDIS
-    REDIS_HOST: str = "localhost"
-    REDIS_PORT: str = "6379"
-    TIMED_CACHE: int = 30
 
     class Config:
         """Load config file"""
