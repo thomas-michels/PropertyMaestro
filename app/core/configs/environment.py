@@ -11,9 +11,16 @@ class Environment(BaseSettings):
     """
 
     # APPLICATION
-    APPLICATION_HOST: str = "localhost"
-    APPLICATION_PORT: int = 8000
     ADDRESS_BASE_URL: str = "localhost:8000"
+
+    # RABBIT
+    RBMQ_HOST: str
+    RBMQ_USER: str
+    RBMQ_PASS: str
+    RBMQ_PORT: int
+    RBMQ_EXCHANGE: str
+    RBMQ_VHOST: str
+    PREFETCH_VALUE: int
 
     # DATABASE
     DATABASE_URL: str = "localhost:5432"
@@ -25,6 +32,20 @@ class Environment(BaseSettings):
     ENVIRONMENT: str = "test"
     DATABASE_MIN_CONNECTIONS: int = 1
     DATABASE_MAX_CONNECTIONS: int = 1
+
+    # PORTAIS
+    PORTAL_IMOVEIS_URL: str
+    ZAP_IMOVEIS_URL: str
+    ZAP_IMOVEIS_BASE_URL: str
+
+    # REDIS
+    REDIS_HOST: str
+    REDIS_PORT: str
+    TIMED_CACHE: int
+
+    # Queues
+    ZAP_IMOVEIS_IN_CHANNEL: str
+    PORTAL_IMOVEIS_IN_CHANNEL: str
 
     class Config:
         """Load config file"""

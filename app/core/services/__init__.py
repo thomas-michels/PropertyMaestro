@@ -1,2 +1,4 @@
 from .populate_neighbor import start_populate_neighborhood
 from .populate_streets import start_populate_streets
+from .check_properties import CheckProperties
+from .property_services import PropertyServices
