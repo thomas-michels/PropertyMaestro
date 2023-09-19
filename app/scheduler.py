@@ -14,6 +14,7 @@ _logger = get_logger(__name__)
 
 app = Rocketry(config={"task_execution": "thread"})
 
+
 @app.setup()
 def starting_database(session=Session()):
     session.parameters.connection_pool=start_pool()
@@ -25,7 +26,6 @@ async def health_check():
 @app.task(daily.starting("00:00"), based="finish")
 async def populate_database():
     _logger.info(f"Checking if database needs to be populated")
-    return True
 
     try:
         check_url = _env.ADDRESS_BASE_URL + "/address/zip-code/89066-040"
