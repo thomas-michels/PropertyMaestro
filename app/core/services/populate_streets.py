@@ -1,8 +1,9 @@
 from datetime import datetime
 import requests
-from app.core.configs import get_logger
+from app.core.configs import get_logger, get_environment
 
 _logger = get_logger(__name__)
+_env = get_environment()
 
 
 def start_populate_streets():
@@ -45,7 +46,7 @@ def start_populate_streets():
     count = 0
     for data in flood_data.values():
         try:
-            requests.post(url="http://localhost:8000/address", json=data, headers=headers)
+            requests.post(url=f"{_env.ADDRESS_BASE_URL}/address", json=data, headers=headers)
             _logger.info(data["street"])
             count += 1
 

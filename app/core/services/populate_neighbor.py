@@ -1,8 +1,9 @@
 from datetime import datetime
 import requests
-from app.core.configs import get_logger
+from app.core.configs import get_logger, get_environment
 
 _logger = get_logger(__name__)
+_env = get_environment()
 
 
 def start_populate_neighborhood():
@@ -22,7 +23,7 @@ def start_populate_neighborhood():
     for data in neighbors:
         try:
             requests.post(
-                url="http://localhost:8000/neighborhoods", json=data, headers=headers
+                url=f"{_env.ADDRESS_BASE_URL}/neighborhoods", json=data, headers=headers
             )
             _logger.info(data["name"])
             count += 1
