@@ -12,6 +12,7 @@ class Environment(BaseSettings):
 
     # APPLICATION
     ADDRESS_BASE_URL: str = "localhost:8000"
+    GREY_WOLF_BASE_URL: str
 
     # RABBIT
     RBMQ_HOST: str
