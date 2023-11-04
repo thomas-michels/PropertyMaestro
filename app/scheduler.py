@@ -92,7 +92,7 @@ async def train_model():
 
     try:
         check_url = _env.GREY_WOLF_BASE_URL + "/models/train"
-        response = requests.get(url=check_url)
+        response = requests.post(url=check_url)
 
         if response.status_code == 202:
             _logger.info(f"New model will be trained")
