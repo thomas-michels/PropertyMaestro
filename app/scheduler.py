@@ -24,7 +24,7 @@ def starting_database(session=Session()):
 async def health_check():
     _logger.info("I'm alive")
 
-@app.task(time_of_day.at("00:00"), based="finish")
+@app.task(daily & (time_of_day.at("00:00")), based="finish")
 async def populate_database():
     _logger.info(f"Checking if database needs to be populated")
 
@@ -54,7 +54,7 @@ async def populate_database():
         _logger.error(f"Error on populate_database: {str(error)}")
         return False
 
-@app.task(time_of_day.at("01:00"), based="finish")
+@app.task(daily & (time_of_day.at("01:00")), based="finish")
 async def start_portal_imoveis(session=Session()):
     _logger.info("start_portal_imoveis")
     with session.parameters.connection_pool.connection() as conn:
@@ -64,7 +64,7 @@ async def start_portal_imoveis(session=Session()):
     _logger.info("Portal Imoveis task had ended")
     return True
 
-@app.task(time_of_day.at("02:00"), based="finish")
+@app.task(daily & (time_of_day.at("02:00")), based="finish")
 async def start_zap_imoveis(session=Session()):
     _logger.info("start_zap_imoveis")
     with session.parameters.connection_pool.connection() as conn:
@@ -74,7 +74,7 @@ async def start_zap_imoveis(session=Session()):
     _logger.info("Zap Imoveis task had ended")
     return True
 
-@app.task(time_of_day.at("00:15"), based="finish")
+@app.task(daily & (time_of_day.at("00:15")), based="finish")
 async def check_all_properties(session=Session()):
     _logger.info("check_all_properties")
     with session.parameters.connection_pool.connection() as conn:
@@ -86,7 +86,7 @@ async def check_all_properties(session=Session()):
     _logger.info("All properties were checked")
     return True
 
-@app.task(time_of_day.at("05:00"), based="finish")
+@app.task(daily & (time_of_day.at("04:00")), based="finish")
 async def train_model():
     _logger.info(f"Checking if database needs to be populated")
 
