@@ -24,67 +24,67 @@ def starting_database(session=Session()):
 async def health_check():
     _logger.info("I'm alive")
 
-@app.task(daily & (time_of_day.at("00:00")), based="finish")
-async def populate_database():
-    _logger.info(f"Checking if database needs to be populated")
+# @app.task(daily & (time_of_day.at("00:00")), based="finish")
+# async def populate_database():
+#     _logger.info(f"Checking if database needs to be populated")
 
-    try:
-        for i in range(5):
-            check_url = _env.ADDRESS_BASE_URL + "/address/zip-code/89066-040"
-            response = requests.get(url=check_url)
+#     try:
+#         for i in range(5):
+#             check_url = _env.ADDRESS_BASE_URL + "/address/zip-code/89066-040"
+#             response = requests.get(url=check_url)
 
-            if response.status_code == 200:
-                break
+#             if response.status_code == 200:
+#                 break
             
-            time.sleep(2)
+#             time.sleep(2)
 
-        if response.status_code == 200:
-            _logger.info(f"Database already populated")
-            return True
+#         if response.status_code == 200:
+#             _logger.info(f"Database already populated")
+#             return True
 
-        else:
-            _logger.info(f"Starting to populate neighborhoods")
-            start_populate_neighborhood()
+#         else:
+#             _logger.info(f"Starting to populate neighborhoods")
+#             start_populate_neighborhood()
 
-            _logger.info(f"Starting to populate streets")
-            start_populate_streets()
-            return True
+#             _logger.info(f"Starting to populate streets")
+#             start_populate_streets()
+#             return True
 
-    except Exception as error:
-        _logger.error(f"Error on populate_database: {str(error)}")
-        return False
+#     except Exception as error:
+#         _logger.error(f"Error on populate_database: {str(error)}")
+#         return False
 
-@app.task(daily & (time_of_day.at("01:00")), based="finish")
-async def start_portal_imoveis(session=Session()):
-    _logger.info("start_portal_imoveis")
-    with session.parameters.connection_pool.connection() as conn:
-        pg_connection = PGConnection(conn=conn)
-        start_portal_imoveis_extractor(conn=pg_connection)
+# @app.task(daily & (time_of_day.at("01:00")), based="finish")
+# async def start_portal_imoveis(session=Session()):
+#     _logger.info("start_portal_imoveis")
+#     with session.parameters.connection_pool.connection() as conn:
+#         pg_connection = PGConnection(conn=conn)
+#         start_portal_imoveis_extractor(conn=pg_connection)
 
-    _logger.info("Portal Imoveis task had ended")
-    return True
+#     _logger.info("Portal Imoveis task had ended")
+#     return True
 
-@app.task(daily & (time_of_day.at("02:00")), based="finish")
-async def start_zap_imoveis(session=Session()):
-    _logger.info("start_zap_imoveis")
-    with session.parameters.connection_pool.connection() as conn:
-        pg_connection = PGConnection(conn=conn)
-        start_zap_imoveis_extractor(conn=pg_connection)
+# @app.task(daily & (time_of_day.at("02:00")), based="finish")
+# async def start_zap_imoveis(session=Session()):
+#     _logger.info("start_zap_imoveis")
+#     with session.parameters.connection_pool.connection() as conn:
+#         pg_connection = PGConnection(conn=conn)
+#         start_zap_imoveis_extractor(conn=pg_connection)
 
-    _logger.info("Zap Imoveis task had ended")
-    return True
+#     _logger.info("Zap Imoveis task had ended")
+#     return True
 
-@app.task(daily & (time_of_day.at("00:15")), based="finish")
-async def check_all_properties(session=Session()):
-    _logger.info("check_all_properties")
-    with session.parameters.connection_pool.connection() as conn:
-        pg_connection = PGConnection(conn=conn)
-        redis_conn = RedisClient()
-        check = CheckProperties(conn=pg_connection, redis_conn=redis_conn)
-        check.handle(None)
+# @app.task(daily & (time_of_day.at("00:15")), based="finish")
+# async def check_all_properties(session=Session()):
+#     _logger.info("check_all_properties")
+#     with session.parameters.connection_pool.connection() as conn:
+#         pg_connection = PGConnection(conn=conn)
+#         redis_conn = RedisClient()
+#         check = CheckProperties(conn=pg_connection, redis_conn=redis_conn)
+#         check.handle(None)
 
-    _logger.info("All properties were checked")
-    return True
+#     _logger.info("All properties were checked")
+#     return True
 
 @app.task(daily & (time_of_day.at("04:00")), based="finish")
 async def train_model():
